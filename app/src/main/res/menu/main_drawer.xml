@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Estes são os items que formam o Menu de Navegação -->
+
+    <item
+        android:id="@+id/nav_mapa"
+        android:title="@string/mapa_campus"
+        android:icon="@drawable/ic_map_black_24dp"
+        />
+
+    <item
+        android:id="@+id/nav_horario"
+        android:title="@string/meus_horarios"
+        android:icon="@drawable/ic_schedule_black_24dp"
+        />
+
+    <item
+        android:id="@+id/nav_horario_curso"
+        android:title="@string/horario_curso"
+        android:icon="@drawable/ic_event_black_24dp"
+        />
+
+    <item
+        android:id="@+id/nav_help"
+        android:title="@string/ajuda"
+        android:icon="@drawable/ic_help_black_24dp"
+        />
+
+</menu>

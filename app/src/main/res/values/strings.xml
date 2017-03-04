@@ -1,0 +1,21 @@
+<resources>
+    <!-- Nome do App -->
+    <string name="app_name">UEPB Student Map</string>
+    <!-- -->
+    
+    <!-- Títulos do Menu de Navegação -->
+    <string name="mapa_campus">Mapa do Campus</string>
+    <string name="meus_horarios">Meus Horários</string>
+    <string name="horario_curso">Horário Completo por Curso</string>
+    <string name="ajuda">Ajuda</string>
+    <!-- -->
+
+    <!-- Strings do Header do Menu de Navegação -->
+    <string name="logo_uepb">Logo UEPB</string>
+    <string name="criado_por">Desenvolvido por: Desblocados Development</string>
+
+    <!-- Strings para o construtor do ActionBarDrawerToggle -->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+</resources>
