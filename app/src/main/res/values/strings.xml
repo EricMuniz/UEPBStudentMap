@@ -2,7 +2,7 @@
     <!-- Nome do App -->
     <string name="app_name">UEPB Student Map</string>
     <!-- -->
-    
+
     <!-- Títulos do Menu de Navegação -->
     <string name="mapa_campus">Mapa do Campus</string>
     <string name="meus_horarios">Meus Horários</string>
@@ -18,4 +18,14 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
+    <!-- Array de entradas para o Spinner -->
+    <string-array name="cursos">
+        <item>Admistração</item>
+        <item>Computação</item>
+        <item>Física</item>
+        <item>Matemática</item>
+    </string-array>
+
+    <!-- String do botão do Spinner -->
+    <string name="buscar">Buscar</string>
 </resources>

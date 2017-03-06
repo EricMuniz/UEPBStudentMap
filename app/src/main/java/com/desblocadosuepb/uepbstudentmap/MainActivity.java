@@ -4,12 +4,16 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+
+import com.desblocadosuepb.uepbstudentmap.fragments.GradeCursoFragment;
+import com.desblocadosuepb.uepbstudentmap.fragments.HorarioListFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //TODO Corrigir a cor do texto da Toolbar
         //Setando a Toolbar para substituir a ActionBar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,10 +82,10 @@ public class MainActivity extends AppCompatActivity {
                     //TODO: Criar o Fragment do Mapa
                     break;
                 case R.id.nav_horario:
-                    //TODO: Criar o Fragment dos Horários pessoais
+                    fragment = new HorarioListFragment();
                     break;
                 case R.id.nav_horario_curso:
-                    //TODO: Criar o Fragment dos Horários por Curso
+                    fragment = new GradeCursoFragment();
                     break;
                 case R.id.nav_help:
                     //TODO: Criar o Fragment da Ajuda
@@ -89,7 +94,11 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
-            //TODO: Acrescentar o código de FragmentTransitions
+            //TODO: Revisar o código de FragmentTransitions
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_main, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
 
             item.setChecked(true); //Destaca o item do menu de navegação
             setTitle(item.getTitle()); //Troca o título da ActionBar
