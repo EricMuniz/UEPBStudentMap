@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout usado pelo Adapter da ListView interna do
+  activity_detalhes.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- TextView usada para criar as linhas da ListView -->
+    <TextView
+        android:id="@+id/row_horario"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:background="#fff"
+        />
+
+</RelativeLayout>

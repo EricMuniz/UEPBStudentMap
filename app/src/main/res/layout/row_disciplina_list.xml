@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout usado pelo Adapter das Disciplinas.
+  A view rais é um RelativeLayout e seus filhos represetam
+  as linhas da view -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <!-- Linha do Nome -->
+    <TextView
+        android:id="@+id/row_nome"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:padding="10dp"
+
+        android:textSize="18sp"
+        android:textColor="#FFF"
+        android:background="@color/colorPrimary"
+        />
+
+    <!-- Linha do Código -->
+    <TextView
+        android:id="@+id/row_codigo"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/row_nome"
+
+        android:padding="10dp"
+
+        android:textSize="18sp"
+        android:textColor="#fff"
+        android:background="@color/colorPrimary"
+        />
+
+    <!-- Linha do Curso -->
+    <TextView
+        android:id="@+id/row_curso"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/row_codigo"
+
+        android:padding="10dp"
+
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:background="#fff"
+        />
+
+    <!-- Linha do Período -->
+    <TextView
+        android:id="@+id/row_periodo"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/row_curso"
+
+        android:padding="10dp"
+
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:background="#fff"
+        />
+
+    <!-- Botão para mais detalhes -->
+    <Button
+        android:id="@+id/row_detalhes"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/row_periodo"
+
+        android:padding="10dp"
+
+        android:text="@string/detalhes"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textColor="#339999"
+        android:background="#fff"
+        />
+
+</RelativeLayout>

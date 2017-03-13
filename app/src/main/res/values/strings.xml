@@ -13,10 +13,12 @@
     <!-- Strings do Header do Menu de Navegação -->
     <string name="logo_uepb">Logo UEPB</string>
     <string name="criado_por">Desenvolvido por: Desblocados Development</string>
+    <!-- -->
 
     <!-- Strings para o construtor do ActionBarDrawerToggle -->
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <!-- -->
 
     <!-- Array de entradas para o Spinner -->
     <string-array name="cursos">
@@ -25,7 +27,12 @@
         <item>Física</item>
         <item>Matemática</item>
     </string-array>
+    <!-- -->
 
-    <!-- String do botão do Spinner -->
+    <!-- String dos botões -->
     <string name="buscar">Buscar</string>
+    <string name="detalhes">TOQUE PARA MAIS DETALHES</string>
+    <string name="adicionar">ADICIONAR</string>
+    <!-- -->
+
 </resources>

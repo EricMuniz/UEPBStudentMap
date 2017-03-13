@@ -7,12 +7,13 @@
     android:id="@+id/drawer_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.desblocadosuepb.uepbstudentmap.MainActivity">
+    tools:context="com.desblocadosuepb.uepbstudentmap.activities.MainActivity">
 
     <!-- O LinearLayout representa os conteúdos da tela -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:orientation="vertical">
 
         <!-- Essa tag chama a toolbar que vai ser mostrada no topo da tela -->
@@ -25,6 +26,7 @@
         <!-- Essa é a view de conteúdo principal, onde vão ser carregados os Fragments -->
         <FrameLayout
             android:id="@+id/content_main"
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -35,10 +37,13 @@
     <!-- O Menu de Navegação que vem da esquerda -->
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
+
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+
         android:fitsSystemWindows="true"
+
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/main_drawer"
         />

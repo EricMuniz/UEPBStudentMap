@@ -2,7 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Estes são os items que formam o Menu de Navegação -->
-
     <item
         android:id="@+id/nav_mapa"
         android:title="@string/mapa_campus"

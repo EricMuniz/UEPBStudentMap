@@ -1,28 +1,43 @@
 package com.desblocadosuepb.uepbstudentmap.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.desblocadosuepb.uepbstudentmap.activities.DetalhesActivity;
 import com.desblocadosuepb.uepbstudentmap.R;
 import com.desblocadosuepb.uepbstudentmap.model.DisciplinaVO;
 
 import java.util.List;
 
 /**
- * Created by Eric on 05/03/2017.
+ * Esta classe é um ArrayAdapter usado pela classe GradeCursoFragment
+ * para definir e preencher um layout personalizado para cada item
+ * da sua ListView.
+ *
+ * @author Eric
+ * @version 1
+ * @since Release 01
+ * @see android.widget.ArrayAdapter
+ * @see com.desblocadosuepb.uepbstudentmap.fragments.GradeCursoFragment
  */
-
-//TODO Documentar
-
 public class DisciplinaAdapter extends ArrayAdapter<DisciplinaVO>{
 
     private Context context;
     private List<DisciplinaVO> values;
 
+    /**
+     * Construtor da classe DisciplinaAdapter.
+     *
+     * @param context O contexto onde o layout será inflado.
+     * @param values  O Array de DisciplinaVO para preencher os campos relacionados na ListView.
+     */
     public DisciplinaAdapter(Context context, List<DisciplinaVO> values){
         super(context, -1, values);
         this.context = context;
@@ -30,28 +45,36 @@ public class DisciplinaAdapter extends ArrayAdapter<DisciplinaVO>{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @NonNull
+    public View getView(int position, final View convertView, @NonNull ViewGroup parent) {
 
-        DisciplinaVO disciplina = values.get(position);
+        final DisciplinaVO disciplina = values.get(position);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View rowView = inflater.inflate(R.layout.row_horario_list, parent, false);
+        final View rowView = inflater.inflate(R.layout.row_disciplina_list, parent, false);
 
-        TextView rowCpt = (TextView) rowView.findViewById(R.id.row_cpt);
-        rowCpt.setText(disciplina.getCpt());
+        TextView rowCpt = (TextView) rowView.findViewById(R.id.row_codigo);
+        rowCpt.setText(disciplina.getCodigo());
 
         TextView rowNome = (TextView) rowView.findViewById(R.id.row_nome);
         rowNome.setText(disciplina.getNome());
 
         TextView rowCurso = (TextView) rowView.findViewById(R.id.row_curso);
-        rowCurso.setText(disciplina.getCurso());
+        rowCurso.setText(String.format("Curso: %s", disciplina.getCurso()));
 
         TextView rowPeriodo = (TextView) rowView.findViewById(R.id.row_periodo);
-        rowPeriodo.setText(Integer.toString(disciplina.getPeriodo()));
+        rowPeriodo.setText(String.format("Período: %s", Integer.toString(disciplina.getPeriodo())));
 
-        TextView rowProfessor = (TextView) rowView.findViewById(R.id.row_professor);
-        rowProfessor.setText(disciplina.getProfessor());
+        Button rowDetalhes = (Button) rowView.findViewById(R.id.row_detalhes);
+        rowDetalhes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), DetalhesActivity.class);
+                intent.putExtra(DetalhesActivity.EXTRA_CPT, disciplina.getCodigo());
+                context.startActivity(intent);
+            }
+        });
 
         return rowView;
     }

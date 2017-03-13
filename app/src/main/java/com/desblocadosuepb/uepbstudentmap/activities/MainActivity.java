@@ -1,4 +1,4 @@
-package com.desblocadosuepb.uepbstudentmap;
+package com.desblocadosuepb.uepbstudentmap.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -12,8 +12,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.desblocadosuepb.uepbstudentmap.R;
 import com.desblocadosuepb.uepbstudentmap.fragments.GradeCursoFragment;
-import com.desblocadosuepb.uepbstudentmap.fragments.HorarioListFragment;
+import com.desblocadosuepb.uepbstudentmap.fragments.RDMListFragment;
+
+/**
+ * Esta classe é a Activity principal da aplicação onde o layout principal
+ * é setado e támbém onde os Fragments que representam as principais funções
+ * da aplicação são manipulados.
+ *
+ * @author Eric
+ * @version 1
+ * @since Release 01 da aplicação
+ */
 
 public class MainActivity extends AppCompatActivity {
 
@@ -72,6 +83,12 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
+    /**
+     * Classe interna da Activity principal da aplicação.
+     * Esta classe define um Listener para os itens do NavigationDrawer.
+     * Quando um item é clicado, é esta classe quem realiza a transição dos Fragments
+     * na tela.
+     */
     private class DrawerItemListener implements NavigationView.OnNavigationItemSelectedListener{
 
         @Override
@@ -82,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     //TODO: Criar o Fragment do Mapa
                     break;
                 case R.id.nav_horario:
-                    fragment = new HorarioListFragment();
+                    fragment = new RDMListFragment();
                     break;
                 case R.id.nav_horario_curso:
                     fragment = new GradeCursoFragment();
