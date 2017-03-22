@@ -12,6 +12,7 @@ public class RDMVO {
 
     private int id;
     private String nome;
+    private String curso;
 
     /**
      * Gets id.
@@ -47,5 +48,23 @@ public class RDMVO {
      */
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    /**
+     * Gets curso.
+     *
+     * @return the curso
+     */
+    public String getCurso() {
+        return curso;
+    }
+
+    /**
+     * Sets curso.
+     *
+     * @param curso the curso
+     */
+    public void setCurso(String curso) {
+        this.curso = curso;
     }
 }

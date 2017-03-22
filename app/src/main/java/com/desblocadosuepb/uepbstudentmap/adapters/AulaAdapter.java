@@ -1,8 +1,10 @@
 package com.desblocadosuepb.uepbstudentmap.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.desblocadosuepb.uepbstudentmap.R;
 import com.desblocadosuepb.uepbstudentmap.activities.RDMListActivity;
 import com.desblocadosuepb.uepbstudentmap.dao.AulaHorarioDAO;
+import com.desblocadosuepb.uepbstudentmap.dao.CompoeDAO;
+import com.desblocadosuepb.uepbstudentmap.dao.DisciplinaDAO;
 import com.desblocadosuepb.uepbstudentmap.model.AulaVO;
 import com.desblocadosuepb.uepbstudentmap.model.DisciplinaVO;
 
@@ -35,6 +40,8 @@ public class AulaAdapter extends ArrayAdapter<AulaVO> {
     private Context context;
     private DisciplinaVO disciplina;
     private List<AulaVO> values;
+    private String acao = "detalhes";
+    private int rdmId = 0;
 
     /**
      * Construtor da classe AulaAdapter
@@ -50,11 +57,20 @@ public class AulaAdapter extends ArrayAdapter<AulaVO> {
         this.values = values;
     }
 
+    public AulaAdapter(Context context, List<AulaVO> values, String acao, int rdmId){
+        super(context, -1, values);
+        this.context = context;
+        this.values = values;
+        this.acao = acao;
+        this.rdmId = rdmId;
+    }
+
     @Override
     @NonNull
     public View getView(int position, View convertView, @NonNull ViewGroup parent){
 
         final AulaVO aula = values.get(position);
+        disciplina = new DisciplinaDAO(context).getDisciplina(aula.getDiscCodigo());
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -83,15 +99,45 @@ public class AulaAdapter extends ArrayAdapter<AulaVO> {
         rowListAula.setAdapter(new HorarioAdapter(context, new AulaHorarioDAO(context).list(aula.getId())));
 
         Button rowAdicionar = (Button) rowView.findViewById(R.id.row_Dadicionar);
-        rowAdicionar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), RDMListActivity.class);
-                intent.putExtra(RDMListActivity.EXTRA_AULA_ID, aula.getId());
-                context.startActivity(intent);
-            }
-        });
+        if(acao.equals("remover")) {
+            rowAdicionar.setText("REMOVER");
+            rowAdicionar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(context);
 
+                    dialog.setTitle("Atenção");
+                    dialog.setMessage("Remover deste horário?");
+                    dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            CompoeDAO dao = new CompoeDAO(context);
+                            if(dao.delete(rdmId, aula.getId()))
+                                Toast.makeText(context, "Removido com sucesso", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    dialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    dialog.show();
+                }
+            });
+        }else{
+            rowAdicionar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), RDMListActivity.class);
+                    intent.putExtra(RDMListActivity.EXTRA_AULA_ID, aula.getId());
+                    intent.putExtra(RDMListActivity.EXTRA_CODIGO, aula.getDiscCodigo());
+                    intent.putExtra(RDMListActivity.EXTRA_CURSO, disciplina.getCurso());
+                    context.startActivity(intent);
+                }
+            });
+        }
         return rowView;
     }
 }

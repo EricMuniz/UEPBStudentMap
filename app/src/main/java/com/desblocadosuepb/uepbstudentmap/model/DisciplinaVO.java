@@ -8,7 +8,6 @@ package com.desblocadosuepb.uepbstudentmap.model;
  * @see com.desblocadosuepb.uepbstudentmap.dao.StudentMapDatabaseHelper
  * @since Release 01
  */
-//TODO Documentar
 
 public class DisciplinaVO {
 

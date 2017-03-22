@@ -20,8 +20,14 @@
         <activity
             android:name=".activities.DetalhesActivity"
             android:label="DetalhesActivity"
-            android:parentActivityName=".activities.MainActivity" />
-        <activity android:name=".activities.RDMListActivity"></activity>
+            android:parentActivityName=".activities.MainActivity"
+            />
+        <activity android:name=".activities.RDMListActivity"
+            />
+        <activity
+            android:name=".activities.NovoRDMActivity"
+            android:label="@string/label_add_activity"
+            />
     </application>
 
 </manifest>

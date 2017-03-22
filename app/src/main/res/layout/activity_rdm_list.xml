@@ -4,9 +4,10 @@
     android:id="@+id/activity_rdm_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/activity_horizontal_margin"
     tools:context="com.desblocadosuepb.uepbstudentmap.activities.RDMListActivity">
 
-    <!-- TODO: melhorar esse layout e comentar -->
+    <!-- TODO: comentar -->
     <TextView
         android:id="@+id/row_list_rdm"
 
@@ -16,11 +17,36 @@
         android:padding="10dp"
 
         android:textSize="18sp"
-        android:textColor="#000"
-        android:background="#fff"
-
-        android:text="Nome: Horário 2016.2"
+        android:textColor="#fff"
+        android:background="@color/colorPrimary"
         />
 
+    <TextView
+        android:id="@+id/row_rdm_curso"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/row_list_rdm"
+
+        android:padding="10dp"
+
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:background="#fff"
+        />
+
+    <TextView
+        android:id="@+id/row_list_aula_quant"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/row_rdm_curso"
+
+        android:padding="10dp"
+
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:background="#fff"
+        />
 
 </RelativeLayout>

@@ -34,7 +34,8 @@ public class StudentMapDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         /* Tabela RDM */
         db.execSQL("CREATE TABLE RDM (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "NOME VARCHAR(45));");
+                "NOME VARCHAR(45), " +
+                "CURSO TEXT);");
 
         /* Tabela COMPOE */
         db.execSQL("CREATE TABLE COMPOE (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -92,7 +93,7 @@ public class StudentMapDatabaseHelper extends SQLiteOpenHelper {
         populateTableAula(db, "CPT07113", "Noturno", "Jandilson");
         populateTableHorario(db, 4, "18:00", "Segunda", "205");
 
-        populateTableRDM(db, "Meu horário 2016.2");
+        populateTableRDM(db, "Meu horário 2016.2", "Computação");
     }
 
     @Override
@@ -138,10 +139,11 @@ public class StudentMapDatabaseHelper extends SQLiteOpenHelper {
     }
 
     private static void populateTableRDM(SQLiteDatabase database
-            ,String nome){
+            ,String nome, String curso){
 
         ContentValues rdmValues = new ContentValues();
         rdmValues.put(RDMDAO.TABLECOLUMNS[1], nome);
+        rdmValues.put(RDMDAO.TABLECOLUMNS[2], curso);
 
         database.insert(RDMDAO.TABLENAME, null, rdmValues);
     }

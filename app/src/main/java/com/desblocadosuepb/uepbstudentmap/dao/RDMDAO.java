@@ -30,7 +30,7 @@ public class RDMDAO {
     /**
      * A constante TABLECOLUMNS. As colunas da tabela.
      */
-    public static final String[] TABLECOLUMNS = new String[]{"_id", "NOME"};
+    public static final String[] TABLECOLUMNS = new String[]{"_id", "NOME", "CURSO"};
 
     /**
      * Construtor da classe RDMDAO
@@ -47,12 +47,13 @@ public class RDMDAO {
      *
      * @param nome O nome do RDM
      */
-    public void insert(String nome){
+    public void insert(String nome, String curso){
         try{
             SQLiteDatabase database = new StudentMapDatabaseHelper(context).getWritableDatabase();
             ContentValues values = new ContentValues();
 
-            values.put("NOME",nome);
+            values.put("NOME", nome);
+            values.put("CURSO", curso);
 
             database.insert(TABLENAME, null, values);
             database.close();
@@ -79,6 +80,7 @@ public class RDMDAO {
                 RDMVO horario = new RDMVO();
                 horario.setId(cursor.getInt(cursor.getColumnIndex(TABLECOLUMNS[0])));
                 horario.setNome(cursor.getString(cursor.getColumnIndex(TABLECOLUMNS[1])));
+                horario.setCurso(cursor.getString(cursor.getColumnIndex(TABLECOLUMNS[2])));
 
                 lista.add(horario);
             }

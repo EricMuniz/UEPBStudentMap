@@ -7,6 +7,10 @@ import android.os.Bundle;
 import com.desblocadosuepb.uepbstudentmap.adapters.AulaAdapter;
 import com.desblocadosuepb.uepbstudentmap.dao.AulaDAO;
 import com.desblocadosuepb.uepbstudentmap.dao.DisciplinaDAO;
+import com.desblocadosuepb.uepbstudentmap.model.AulaVO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Esta classe é uma ListActivity usada para mostrar a listagem
@@ -35,9 +39,20 @@ public class DetalhesActivity extends ListActivity {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        String codigo = intent.getStringExtra(EXTRA_CPT);
+        if(intent.getIntegerArrayListExtra("arrayExtra")!= null) {
+            int rdmId = (Integer) intent.getExtras().get("rdmId");
+            ArrayList<Integer> listaAulaId = intent.getIntegerArrayListExtra("arrayExtra");
+            List<AulaVO> listaAulasVO = new ArrayList<>();
+            for (Integer aulaId : listaAulaId){
+                listaAulasVO.add(new AulaDAO(this).getAula(aulaId));
+            }
 
-        setListAdapter(new AulaAdapter(this, new DisciplinaDAO(this).getDisciplina(codigo),
-                new AulaDAO(this).list(codigo)));
+            setListAdapter(new AulaAdapter(this, listaAulasVO, "remover", rdmId));
+        }else {
+            String codigo = intent.getStringExtra(EXTRA_CPT);
+
+            setListAdapter(new AulaAdapter(this, new DisciplinaDAO(this).getDisciplina(codigo),
+                    new AulaDAO(this).list(codigo)));
+        }
     }
 }

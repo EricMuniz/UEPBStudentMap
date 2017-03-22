@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.desblocadosuepb.uepbstudentmap.adapters.RDMListAdapter;
+import com.desblocadosuepb.uepbstudentmap.dao.RDMDAO;
 import com.desblocadosuepb.uepbstudentmap.dao.StudentMapDatabaseHelper;
 
 /**
@@ -26,10 +28,6 @@ import com.desblocadosuepb.uepbstudentmap.dao.StudentMapDatabaseHelper;
  * @see com.desblocadosuepb.uepbstudentmap.activities.MainActivity
  */
 public class RDMListFragment extends ListFragment {
-
-    private SQLiteDatabase database;
-    private Cursor cursor;
-
 
     /**
      * Construtor vazio (default) de RDMListFragment
@@ -45,22 +43,8 @@ public class RDMListFragment extends ListFragment {
         //TextView textView = new TextView(getActivity());
         //textView.setText(R.string.hello_blank_fragment);
 
-        try{
-            database = new StudentMapDatabaseHelper(getContext()).getReadableDatabase();
 
-            cursor = database.query("COMPOE",
-                    new String[]{"_id", "RDM_ID", "AULA_ID"},
-                    null,null,null,null,null);
-
-            CursorAdapter listAdapter = new SimpleCursorAdapter(getContext(),
-                    android.R.layout.simple_list_item_1,
-                    cursor,
-                    new String[]{"RDM_ID", "AULA_ID"},
-                    new int[]{android.R.id.text1, android.R.id.text1},0);
-            setListAdapter(listAdapter);
-        }catch (SQLiteException e){
-            Toast.makeText(getContext(), "Database Indisponível", Toast.LENGTH_SHORT).show();
-        }
+        setListAdapter(new RDMListAdapter(getContext(), new RDMDAO(getContext()).list(), "listar"));
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -68,7 +52,5 @@ public class RDMListFragment extends ListFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        cursor.close();
-        database.close();
     }
 }

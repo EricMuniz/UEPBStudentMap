@@ -1,16 +1,24 @@
 package com.desblocadosuepb.uepbstudentmap.activities;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.desblocadosuepb.uepbstudentmap.R;
 import com.desblocadosuepb.uepbstudentmap.fragments.GradeCursoFragment;
@@ -38,10 +46,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //TODO Corrigir a cor do texto da Toolbar
         //Setando a Toolbar para substituir a ActionBar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        FloatingActionButton floatingButton = (FloatingActionButton) findViewById(R.id.action_add);
+        floatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, NovoRDMActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //Recuperar o DrawerLayout do layout
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_main);
@@ -111,15 +127,13 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
-            //TODO: Revisar o código de FragmentTransitions
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.content_main, fragment);
             transaction.addToBackStack(null);
             transaction.commit();
 
-            item.setChecked(true); //Destaca o item do menu de navegação
             setTitle(item.getTitle()); //Troca o título da ActionBar
-            drawerLayout.closeDrawers(); //Fecha o Drawer
+            drawerLayout.closeDrawer(GravityCompat.START); //Fecha o Drawer
 
             return true;
         }

@@ -6,13 +6,13 @@
     <!-- Títulos do Menu de Navegação -->
     <string name="mapa_campus">Mapa do Campus</string>
     <string name="meus_horarios">Meus Horários</string>
-    <string name="horario_curso">Horário Completo por Curso</string>
+    <string name="horario_curso">Horário por Curso</string>
     <string name="ajuda">Ajuda</string>
     <!-- -->
 
     <!-- Strings do Header do Menu de Navegação -->
     <string name="logo_uepb">Logo UEPB</string>
-    <string name="criado_por">Desenvolvido por: Desblocados Development</string>
+    <string name="criado_por">Criado por Desblocados Development</string>
     <!-- -->
 
     <!-- Strings para o construtor do ActionBarDrawerToggle -->
@@ -33,6 +33,11 @@
     <string name="buscar">Buscar</string>
     <string name="detalhes">TOQUE PARA MAIS DETALHES</string>
     <string name="adicionar">ADICIONAR</string>
+    <!-- -->
+
+    <!-- Strings da Activity de novo RDM -->
+    <string name="label_add_activity">Novo Horário</string>
+    <string name="edit_text_hint">Informe um nome</string>
     <!-- -->
 
 </resources>

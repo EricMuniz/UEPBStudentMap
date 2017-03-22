@@ -2,6 +2,7 @@ package com.desblocadosuepb.uepbstudentmap.dao;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.widget.Toast;
@@ -76,5 +77,33 @@ public class AulaDAO {
         }
 
         return list;
+    }
+
+    public AulaVO getAula(int aulaId){
+
+        AulaVO aula = new AulaVO();
+
+        try{
+            SQLiteDatabase database = new StudentMapDatabaseHelper(context).getReadableDatabase();
+            Cursor cursor = database.query(TABLENAME,
+                    TABLECOLUMNS,
+                    "_id = ?",
+                    new String[]{Integer.toString(aulaId)},
+                    null,null,null);
+
+            if(cursor.moveToFirst()) {
+                aula.setId(cursor.getInt(cursor.getColumnIndex(TABLECOLUMNS[0])));
+                aula.setDiscCodigo(cursor.getString(cursor.getColumnIndex(TABLECOLUMNS[1])));
+                aula.setTurno(cursor.getString(cursor.getColumnIndex(TABLECOLUMNS[2])));
+                aula.setProfessor(cursor.getString(cursor.getColumnIndex(TABLECOLUMNS[3])));
+            }
+
+            cursor.close();
+            database.close();
+        }catch (SQLException e){
+            Toast.makeText(context, "Database Indisponível", Toast.LENGTH_SHORT).show();
+        }
+
+        return aula;
     }
 }

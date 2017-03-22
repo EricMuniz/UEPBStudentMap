@@ -57,13 +57,6 @@ public class GradeCursoFragment extends Fragment {
                 String nomeCurso = String.valueOf(cursos.getSelectedItem());
 
                 listDisciplinas.setAdapter(new DisciplinaAdapter(getContext(), new DisciplinaDAO(getContext()).list(nomeCurso)));
-
-                listDisciplinas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    }
-                });
             }
         });
 
