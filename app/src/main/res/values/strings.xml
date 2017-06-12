@@ -4,10 +4,10 @@
     <!-- -->
 
     <!-- Títulos do Menu de Navegação -->
-    <string name="mapa_campus">Mapa do Campus</string>
-    <string name="meus_horarios">Meus Horários</string>
-    <string name="horario_curso">Horário por Curso</string>
-    <string name="ajuda">Ajuda</string>
+    <string name="menu_mapa_campus">Mapa do Campus</string>
+    <string name="menu_meus_horarios">Meus Horários</string>
+    <string name="menu_horario_curso">Horário por Curso</string>
+    <string name="menu_ajuda">Ajuda</string>
     <!-- -->
 
     <!-- Strings do Header do Menu de Navegação -->
@@ -33,11 +33,11 @@
     <string name="buscar">Buscar</string>
     <string name="detalhes">TOQUE PARA MAIS DETALHES</string>
     <string name="adicionar">ADICIONAR</string>
+    <string name="remover">REMOVER</string>
     <!-- -->
 
-    <!-- Strings da Activity de novo RDM -->
-    <string name="label_add_activity">Novo Horário</string>
+    <!-- Strings do Fragment de novo RDM -->
+    <string name="label_add_rdm">Novo RDM</string>
     <string name="edit_text_hint">Informe um nome</string>
-    <!-- -->
 
 </resources>

@@ -5,36 +5,41 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.desblocadosuepb.uepbstudentmap.R;
-import com.desblocadosuepb.uepbstudentmap.model.DisciplinaVO;
+import com.desblocadosuepb.uepbstudentmap.dao.CompoeDAO;
+import com.desblocadosuepb.uepbstudentmap.model.RDMVO;
 
 import java.util.List;
 
 /**
- * Esta classe é um RecyclerView.Adapter usado pela classe GradeCursoFragment
- * para definir e preencher um layout personalizado para cada item
- * da sua ListView.
+ * Esta classe é um RecyclerView.Adapter usado pelas classes
+ * RDMListFragment e RDMListActivity para definir e
+ * preencher um layout personalizado para cada item
+ * das suas RecyclerView's.
+ * <p>
+ * Este adapter substitui a classe RDMListAdapter que havia
+ * antes no projeto.
  *
  * @author Eric
- * @version 2
+ * @version 1
  * @see android.support.v7.widget.RecyclerView.Adapter
- * @see com.desblocadosuepb.uepbstudentmap.fragments.GradeCursoFragment
- * @since Release 01
+ * @see com.desblocadosuepb.uepbstudentmap.fragments.RDMListFragment
+ * @see com.desblocadosuepb.uepbstudentmap.activities.RDMListActivity
+ * @since release 2
  */
-public class DisciplinaAdapter extends RecyclerView.Adapter<DisciplinaAdapter.ViewHolder>{
+public class RdmAdapter extends RecyclerView.Adapter<RdmAdapter.ViewHolder> {
 
-    private List<DisciplinaVO> values;
+    private List<RDMVO> values;
     private Listener listener;
 
     /**
-     * Construtor da classe DisciplinaAdapter.
+     * Construtor da classe RdmAdapter.
      *
-     * @param values lista com VO's
+     * @param values lista com os VO's
      */
-    public DisciplinaAdapter(List<DisciplinaVO> values){
+    public RdmAdapter(List<RDMVO> values){
         this.values = values;
     }
 
@@ -44,7 +49,6 @@ public class DisciplinaAdapter extends RecyclerView.Adapter<DisciplinaAdapter.Vi
      * Usada para que o Listener do adaptador
      * seja definido pela classe que o instancia.
      */
-
     public interface Listener{
         /**
          * Método que define o que o item clicado
@@ -64,11 +68,11 @@ public class DisciplinaAdapter extends RecyclerView.Adapter<DisciplinaAdapter.Vi
         private CardView cardView;
 
         /**
-         * Construtor da classe interna ViewHolder
+         *  Construtor da classe interna ViewHolder
          *
          * @param cardView O CardView
          */
-        ViewHolder(CardView cardView) {
+        ViewHolder(CardView cardView){
             super(cardView);
             this.cardView = cardView;
         }
@@ -84,41 +88,37 @@ public class DisciplinaAdapter extends RecyclerView.Adapter<DisciplinaAdapter.Vi
     }
 
     @Override
-    public DisciplinaAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RdmAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //Cria uma nova View
         CardView cardView = (CardView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_view_disciplina, parent, false);
+                .inflate(R.layout.card_view_rdm, parent, false);
 
         return new ViewHolder(cardView);
     }
 
     @Override
-    public void onBindViewHolder(DisciplinaAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         //Recupera o VO a partir da posição do item na RecyclerView
-        DisciplinaVO disciplina = values.get(position);
+        RDMVO rdm = values.get(position);
 
         //Recupera a referênci do CardView, é a partir deste objeto que o layout é inflado
         CardView cardView = holder.cardView;
 
-        //Define o valor do campo do nome da disciplina
-        TextView rowNome = (TextView) cardView.findViewById(R.id.card_view_disciplina_nome);
-        rowNome.setText(disciplina.getNome());
+        //Define o valor do campo do nome do rdm
+        TextView rowListHorario = (TextView) cardView.findViewById(R.id.card_view_rdm_nome);
+        rowListHorario.setText(String.format("Nome: %s", rdm.getNome()));
 
-        //Define o valor do campo do código da disciplina
-        TextView rowCodigo = (TextView) cardView.findViewById(R.id.card_view_disciplina_codigo);;
-        rowCodigo.setText(disciplina.getCodigo());
+        //Define o valor do campo do curso do rdm
+        TextView rowListCurso = (TextView) cardView.findViewById(R.id.card_view_rdm_curso);
+        rowListCurso.setText(String.format("Cusro: %s", rdm.getCurso()));
 
-        //Define o valor do campo do curso da disciplina
-        TextView rowCurso = (TextView) cardView.findViewById(R.id.card_view_disciplina_curso);
-        rowCurso.setText(String.format("Curso: %s", disciplina.getCurso()));
+        //Define o valor do campo da quantidade de aulas do rdm
+        TextView rowListAulaQuant = (TextView) cardView.findViewById(R.id.card_view_rdm_quant_aulas);
+        rowListAulaQuant.setText(String.format("Contêm %s disciplinas",
+                new CompoeDAO(cardView.getContext()).countDisc(rdm.getId())));
 
-        //Define o valor do campo do período da disciplina
-        TextView rowPeriodo = (TextView) cardView.findViewById(R.id.card_view_disciplina_periodo);
-        rowPeriodo.setText(String.format("Período: %s", disciplina.getPeriodo()));
-
-        //Define o listener do botão
-        Button rowDetalhes = (Button) cardView.findViewById(R.id.card_view_disciplina_botao_detalhes);
-        rowDetalhes.setOnClickListener(new View.OnClickListener() {
+        //Define o listener do CardView
+        cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(listener != null){

@@ -1,23 +1,16 @@
 package com.desblocadosuepb.uepbstudentmap.adapters;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.desblocadosuepb.uepbstudentmap.R;
-import com.desblocadosuepb.uepbstudentmap.activities.RDMListActivity;
 import com.desblocadosuepb.uepbstudentmap.dao.AulaHorarioDAO;
-import com.desblocadosuepb.uepbstudentmap.dao.CompoeDAO;
 import com.desblocadosuepb.uepbstudentmap.dao.DisciplinaDAO;
 import com.desblocadosuepb.uepbstudentmap.model.AulaVO;
 import com.desblocadosuepb.uepbstudentmap.model.DisciplinaVO;
@@ -25,119 +18,141 @@ import com.desblocadosuepb.uepbstudentmap.model.DisciplinaVO;
 import java.util.List;
 
 /**
- * Esta classe é um ArrayAdapter usado pela classe DetalhesActivity
+ * Esta classe é um RecyclerView.Adapter usado pela classe DetalhesActivity
  * para definir e preencher um layout personalizado para cada item
- * da sua ListView.
+ * da sua RecyclerView.
  *
  * @author Eric
- * @version 1
- * @since Release 01
- * @see android.widget.ArrayAdapter
+ * @version 2
  * @see com.desblocadosuepb.uepbstudentmap.activities.DetalhesActivity
+ * @see android.support.v7.widget.RecyclerView.Adapter
+ * @since Release 01
  */
-public class AulaAdapter extends ArrayAdapter<AulaVO> {
+public class AulaAdapter extends RecyclerView.Adapter<AulaAdapter.ViewHolder> {
 
-    private Context context;
-    private DisciplinaVO disciplina;
     private List<AulaVO> values;
-    private String acao = "detalhes";
-    private int rdmId = 0;
+    private Listener listener;
+    private boolean remover;
 
     /**
      * Construtor da classe AulaAdapter
      *
-     * @param context    O contexto onde o layout será inflado.
-     * @param disciplina A disciplina usada para preencher os campos relacionados na ListView.
-     * @param values     O Array de AulaVO para preencher os campos relacionados na ListView.
+     * @param values  lista com VO's
+     * @param remover flag que indica que o botão do adapter deve ter o valor "REMOVER"
      */
-    public AulaAdapter(Context context, DisciplinaVO disciplina, List<AulaVO> values){
-        super(context, -1, values);
-        this.context = context;
-        this.disciplina = disciplina;
+    public AulaAdapter(List<AulaVO> values, boolean remover){
         this.values = values;
+        this.remover = remover;
     }
 
-    public AulaAdapter(Context context, List<AulaVO> values, String acao, int rdmId){
-        super(context, -1, values);
-        this.context = context;
-        this.values = values;
-        this.acao = acao;
-        this.rdmId = rdmId;
+    /**
+     * A interface Listener.
+     *
+     * Usada para que o Listener do adaptador
+     * seja definido pela classe que o instancia.
+     */
+    public interface Listener{
+        /**
+         * Método que define o que o item clicado
+         * faz quando é clicado.
+         *
+         * @param position A posição do item clicado na RecyclerView
+         */
+        void onClick(int position);
+    }
+
+    /**
+     * Classe interna que extende a ViewHolder padrão.
+     * Quando instanciada, cria um novo CardView que
+     * representa um item da RecyclerView.
+     */
+    class ViewHolder extends RecyclerView.ViewHolder{
+        private CardView cardView;
+
+        /**
+         * Construtor da classe interna ViewHolder
+         *
+         * @param cardView O CardView
+         */
+        ViewHolder(CardView cardView) {
+            super(cardView);
+            this.cardView = cardView;
+        }
+    }
+
+    /**
+     * Define o Listener.
+     *
+     * @param listener O listener que vem da classe que implementar este adaptador
+     */
+    public void setListener(Listener listener){
+        this.listener = listener;
     }
 
     @Override
-    @NonNull
-    public View getView(int position, View convertView, @NonNull ViewGroup parent){
+    public AulaAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        //Cria uma nova View
+        CardView cardView = (CardView) LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.card_view_aula, parent, false);
 
-        final AulaVO aula = values.get(position);
-        disciplina = new DisciplinaDAO(context).getDisciplina(aula.getDiscCodigo());
+        return new ViewHolder(cardView);
+    }
 
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    @Override
+    public void onBindViewHolder(AulaAdapter.ViewHolder holder, final int position) {
+        //Recupera os VO's a partir da posição do item na RecyclerView
+        AulaVO aula = values.get(position);
+        DisciplinaVO disciplina = new DisciplinaDAO(holder.cardView.getContext()).getDisciplina(aula.getDiscCodigo());
 
-        final View rowView = inflater.inflate(R.layout.activity_detalhes, parent, false);
+        //Recupera a referênci do CardView, é a partir deste objeto que o layout é inflado
+        CardView cardView = holder.cardView;
 
-        TextView rowNome = (TextView) rowView.findViewById(R.id.row_Dnome);
-        rowNome.setText(disciplina.getNome());
+        //Define o valor do campo do nome da disciplina
+        TextView rowDnome = (TextView) cardView.findViewById(R.id.card_view_aula_nome_disciplina);
+        rowDnome.setText(disciplina.getNome());
 
-        TextView rowCodigo = (TextView) rowView.findViewById(R.id.row_Dcodigo);
-        rowCodigo.setText(disciplina.getCodigo());
+        //Define o valor do campo do código da disciplina
+        TextView rowDcodigo = (TextView) cardView.findViewById(R.id.card_view_aula_codigo_disciplina);
+        rowDcodigo.setText(disciplina.getCodigo());
 
-        TextView rowCurso = (TextView) rowView.findViewById(R.id.row_Dcurso);
-        rowCurso.setText(String.format("Curso: %s", disciplina.getCurso()));
+        //Define o valor do campo do curso da disciplina
+        TextView rowDcurso = (TextView) cardView.findViewById(R.id.card_view_aula_curso_disciplina);
+        rowDcurso.setText(String.format("Curso: %s", disciplina.getCurso()));
 
-        TextView rowPeriodo = (TextView) rowView.findViewById(R.id.row_Dperiodo);
-        rowPeriodo.setText(String.format("Período: %s", disciplina.getPeriodo()));
+        //Define o valor do campo do período da disciplina
+        TextView rowDperiodo = (TextView) cardView.findViewById(R.id.card_view_aula_periodo_disciplina);
+        rowDperiodo.setText(String.format("Período: %s", disciplina.getPeriodo()));
 
-        TextView rowTurno = (TextView) rowView.findViewById(R.id.row_Dturno);
-        rowTurno.setText(String.format("Turno: %s", aula.getTurno()));
+        //Define o valor do campo do turno da aula
+        TextView rowDturno = (TextView) cardView.findViewById(R.id.card_view_aula_turno);
+        rowDturno.setText(String.format("Turno: %s", aula.getTurno()));
 
-        TextView rowProfessor = (TextView) rowView.findViewById(R.id.row_Dprofessor);
-        rowProfessor.setText(String.format("Professor: %s", aula.getProfessor()));
+        //Defne o valor do campo do professor da aula
+        TextView rowDprofessor = (TextView) cardView.findViewById(R.id.card_view_aula_professor);
+        rowDprofessor.setText(String.format("Professor: %s", aula.getProfessor()));
 
-        ListView rowListAula = (ListView) rowView.findViewById(R.id.row_list_aulas);
+        //Define os valores do campo dos horários da aula
+        ListView rowListAula = (ListView) cardView.findViewById(R.id.card_view_aula_lista_horarios);
         rowListAula.setDividerHeight(0);
-        rowListAula.setAdapter(new HorarioAdapter(context, new AulaHorarioDAO(context).list(aula.getId())));
+        rowListAula.setAdapter(new HorarioAdapter(cardView.getContext(),
+                new AulaHorarioDAO(cardView.getContext()).list(aula.getId())));
 
-        Button rowAdicionar = (Button) rowView.findViewById(R.id.row_Dadicionar);
-        if(acao.equals("remover")) {
-            rowAdicionar.setText("REMOVER");
-            rowAdicionar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-
-                    dialog.setTitle("Atenção");
-                    dialog.setMessage("Remover deste horário?");
-                    dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            CompoeDAO dao = new CompoeDAO(context);
-                            if(dao.delete(rdmId, aula.getId()))
-                                Toast.makeText(context, "Removido com sucesso", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    dialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-
-                    dialog.show();
+        //Define o listener do botão. Troca o texto do botão se necessário
+        Button rowButton = (Button) cardView.findViewById(R.id.card_view_aula_botao);
+        if(remover)
+            rowButton.setText(R.string.remover);
+        rowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(listener != null){
+                    listener.onClick(position);
                 }
-            });
-        }else{
-            rowAdicionar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getContext(), RDMListActivity.class);
-                    intent.putExtra(RDMListActivity.EXTRA_AULA_ID, aula.getId());
-                    intent.putExtra(RDMListActivity.EXTRA_CODIGO, aula.getDiscCodigo());
-                    intent.putExtra(RDMListActivity.EXTRA_CURSO, disciplina.getCurso());
-                    context.startActivity(intent);
-                }
-            });
-        }
-        return rowView;
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return values.size();
     }
 }

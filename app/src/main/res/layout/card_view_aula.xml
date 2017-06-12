@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Este é o CardView que representa um item da lista de Aulas.
+    Ele é usado na classe AulaAdapter.
+    O CardView é a view raiz e seu filho é um LinearLayout.
+    Os filhos do LinearLayout são os campos com os dados da Aula.-->
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+
+    card_view:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Campo do Nome da Disciplina -->
+        <TextView
+            android:id="@+id/card_view_aula_nome_disciplina"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:padding="10dp"
+
+            android:textSize="18sp"
+            android:textColor="#FFF"
+            android:background="@color/colorPrimary"
+            />
+
+        <!-- Linha do Código -->
+        <TextView
+            android:id="@+id/card_view_aula_codigo_disciplina"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:padding="10dp"
+
+            android:textSize="18sp"
+            android:textColor="#fff"
+            android:background="@color/colorPrimary"
+            />
+
+        <!-- Linha do Curso -->
+        <TextView
+            android:id="@+id/card_view_aula_curso_disciplina"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:padding="10dp"
+
+            android:textSize="18sp"
+            android:textColor="#000"
+            android:background="#fff"
+            />
+
+        <!-- Linha do Período -->
+        <TextView
+            android:id="@+id/card_view_aula_periodo_disciplina"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:padding="10dp"
+
+            android:textSize="18sp"
+            android:textColor="#000"
+            android:background="#fff"
+            />
+
+        <!-- Linha do Turno -->
+        <TextView
+            android:id="@+id/card_view_aula_turno"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:padding="10dp"
+
+            android:textSize="18sp"
+            android:textColor="#000"
+            android:background="#fff"
+            />
+
+        <!-- Linha do Professor -->
+        <TextView
+            android:id="@+id/card_view_aula_professor"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:padding="10dp"
+
+            android:textSize="18sp"
+            android:textColor="#000"
+            android:background="#fff"
+            />
+
+        <!-- ListView das Linhas dos horários Aulas -->
+        <ListView
+            android:id="@+id/card_view_aula_lista_horarios"
+
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+
+            android:padding="10dp"
+
+            android:textSize="18sp"
+            android:textColor="#000"
+            android:background="#fff"
+            />
+
+        <!-- Botão de Adicionar -->
+        <Button
+            android:id="@+id/card_view_aula_botao"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:padding="10dp"
+
+            android:text="@string/adicionar"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textColor="#339999"
+            android:background="#fff"
+            />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

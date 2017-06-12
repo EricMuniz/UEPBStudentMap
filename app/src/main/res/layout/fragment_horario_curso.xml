@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#DEDEDE"
     tools:context="com.desblocadosuepb.uepbstudentmap.fragments.GradeCursoFragment">
 
     <!-- Spinner para seleção do curso do qual se deseja buscar
@@ -34,12 +33,12 @@
         android:text="@string/buscar"
         />
 
-    <!-- ListView onde são mostradas as disciplinas carregadas
+    <!-- RecyclerView onde são mostradas as disciplinas carregadas
      a partir do banco de dados -->
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/list_disciplinas"
 
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 

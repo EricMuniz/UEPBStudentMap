@@ -29,6 +29,7 @@ import java.util.List;
  * @see android.widget.ArrayAdapter
  * @see com.desblocadosuepb.uepbstudentmap.activities.RDMListActivity
  * @since Release 01
+ * @deprecated
  */
 public class RDMListAdapter extends ArrayAdapter<RDMVO> {
 
@@ -79,15 +80,15 @@ public class RDMListAdapter extends ArrayAdapter<RDMVO> {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        final View rowView = inflater.inflate(R.layout.activity_rdm_list, parent, false);
+        final View rowView = inflater.inflate(R.layout.card_view_rdm, parent, false);
 
-        TextView rowListHorario = (TextView) rowView.findViewById(R.id.row_list_rdm);
+        TextView rowListHorario = (TextView) rowView.findViewById(R.id.card_view_rdm_nome);
         rowListHorario.setText(String.format("Nome: %s", horario.getNome()));
 
-        TextView rowListCurso = (TextView) rowView.findViewById(R.id.row_rdm_curso);
+        TextView rowListCurso = (TextView) rowView.findViewById(R.id.card_view_rdm_curso);
         rowListCurso.setText(String.format("Curso: %s", horario.getCurso()));
 
-        TextView rowListAulaQuant = (TextView) rowView.findViewById(R.id.row_list_aula_quant);
+        TextView rowListAulaQuant = (TextView) rowView.findViewById(R.id.card_view_rdm_quant_aulas);
         rowListAulaQuant.setText(String.format("Contêm %s disciplina(s)",
                 new CompoeDAO(getContext()).countDisc(horario.getId())));
 

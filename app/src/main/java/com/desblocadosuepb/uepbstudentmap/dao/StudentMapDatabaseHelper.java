@@ -2,21 +2,32 @@ package com.desblocadosuepb.uepbstudentmap.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.desblocadosuepb.uepbstudentmap.model.AulaHorarioVO;
+import com.desblocadosuepb.uepbstudentmap.model.AulaVO;
+import com.desblocadosuepb.uepbstudentmap.model.DisciplinaVO;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * Classe que representa a base de dados da aplicação.
  *
  * @author Eric
- * @version 1
- * @since Release 01
+ * @version 1.1
  * @see android.database.sqlite.SQLiteOpenHelper
+ * @since Release 01
  */
 public class StudentMapDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "studentmap";
     private static final int DB_VERSION = 1;
+    private Context context;
 
     /**
      * Construtor da classe StudentMapDatabaseHelper.
@@ -24,74 +35,21 @@ public class StudentMapDatabaseHelper extends SQLiteOpenHelper {
      * da super classe passando esse contexto como argumento, além de passar
      * também o nome da base de dados e sua versão.
      *
-     * @param context   O contexto onde a classe está sendo instanciada.
+     * @param context O contexto onde a classe está sendo instanciada.
      */
     public StudentMapDatabaseHelper(Context context){
         super(context, DB_NAME, null, DB_VERSION);
+        this.context = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        /* Tabela RDM */
-        db.execSQL("CREATE TABLE RDM (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "NOME VARCHAR(45), " +
-                "CURSO TEXT);");
 
-        /* Tabela COMPOE */
-        db.execSQL("CREATE TABLE COMPOE (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "RDM_ID VARCHAR(45), " +
-                "AULA_ID INTEGER, " +
-                "FOREIGN KEY (RDM_ID) REFERENCES HORARIO(_id), " +
-                "FOREIGN KEY (AULA_ID) REFERENCES AULA(_id));");
+        createTables(db);
 
-        /* Tabela DISCIPLINA */
-        db.execSQL("CREATE TABLE DISCIPLINA (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "CODIGO TEXT, " +
-                "NOME TEXT, " +
-                "CURSO TEXT, " +
-                "PERIODO INTEGER);");
-
-        /* Tabela AULA */
-        db.execSQL("CREATE TABLE AULA (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "DISC_CODIGO TEXT, " +
-                "TURNO VARCHAR(7), " +
-                "PROFESSOR VARCHAR(100), " +
-                "FOREIGN KEY(DISC_CODIGO) REFERENCES DISCIPLINA(CODIGO));");
-
-        /* Tabela AULAHORARIO */
-        db.execSQL("CREATE TABLE AULAHORARIO (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "ID_AULA INTEGER, " +
-                "HORA VARCHAR(5), " +
-                "DIASEMANA VARCHAR(7), " +
-                "SALA VARCHAR(15), " +
-                "FOREIGN KEY (ID_AULA) REFERENCES AULA(_id));");
-
-        populateTableDisciplina(db, "CPT07102",
-                "Paradigmas de Linguagens de Programação",
-                "Computação",
-                4);
-        populateTableDisciplina(db, "CPT07113",
-                "Banco de Dados II",
-                "Computação",
-                6);
-        populateTableDisciplina(db, "CPT07116",
-                "Laboratório de Engenharia de Software I",
-                "Computação",
-                6);
-
-        populateTableAula(db, "CPT07116", "Diurno", "Pablo Ribeiro Suárez");
-        populateTableHorario(db, 1, "07:00", "Terça", "101");
-        populateTableHorario(db, 1, "07:00", "Quinta", "101");
-
-        populateTableAula(db, "CPT07116", "Noturno", "Pablo Ribeiro Suárez");
-        populateTableHorario(db, 2, "20:00", "Quinta", "101");
-
-        populateTableAula(db, "CPT07113", "Diurno", "Rodrigo Costa Alves");
-        populateTableHorario(db, 3, "10:00", "Quarta", "201");
-        populateTableHorario(db, 3, "08:00", "Sexta", "201");
-
-        populateTableAula(db, "CPT07113", "Noturno", "Jandilson");
-        populateTableHorario(db, 4, "18:00", "Segunda", "205");
+        populateTableDisciplina(context, db);
+        populateTableAula(context, db);
+        populateTableHorario(context, db);
 
         populateTableRDM(db, "Meu horário 2016.2", "Computação");
     }
@@ -101,43 +59,164 @@ public class StudentMapDatabaseHelper extends SQLiteOpenHelper {
         //TODO Adicionar código para atualização da base de dados
     }
 
+    private static void createTables(SQLiteDatabase database){
+        // Tabela RDM
+        database.execSQL("CREATE TABLE RDM (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "NOME VARCHAR(45), " +
+                "CURSO TEXT);");
 
-    private static void populateTableDisciplina(SQLiteDatabase database
-            ,String cpt, String nome, String curso, int periodo){
+        // Tabela COMPOE
+        database.execSQL("CREATE TABLE COMPOE (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "RDM_ID VARCHAR(45), " +
+                "AULA_ID INTEGER, " +
+                "FOREIGN KEY (RDM_ID) REFERENCES HORARIO(_id), " +
+                "FOREIGN KEY (AULA_ID) REFERENCES AULA(_id));");
 
-        ContentValues disciplinaValues = new ContentValues();
+        // Tabela DISCIPLINA
+        database.execSQL("CREATE TABLE DISCIPLINA (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "CODIGO TEXT, " +
+                "NOME TEXT, " +
+                "CURSO TEXT, " +
+                "PERIODO INTEGER);");
 
-        disciplinaValues.put(DisciplinaDAO.TABLECOLLUMNS[1], cpt);
-        disciplinaValues.put(DisciplinaDAO.TABLECOLLUMNS[2], nome);
-        disciplinaValues.put(DisciplinaDAO.TABLECOLLUMNS[3], curso);
-        disciplinaValues.put(DisciplinaDAO.TABLECOLLUMNS[4], periodo);
+        // Tabela AULA
+        database.execSQL("CREATE TABLE AULA (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "DISC_CODIGO TEXT, " +
+                "TURNO VARCHAR(7), " +
+                "PROFESSOR VARCHAR(100), " +
+                "FOREIGN KEY(DISC_CODIGO) REFERENCES DISCIPLINA(CODIGO));");
 
-        database.insert(DisciplinaDAO.TABLENAME, null, disciplinaValues);
+        // Tabela AULAHORARIO
+        database.execSQL("CREATE TABLE AULAHORARIO (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "ID_AULA INTEGER, " +
+                "HORA VARCHAR(5), " +
+                "DIASEMANA VARCHAR(7), " +
+                "SALA VARCHAR(15), " +
+                "FOREIGN KEY (ID_AULA) REFERENCES AULA(_id));");
     }
 
-    private static void populateTableAula(SQLiteDatabase database
-            ,String discCpt,String turno, String professor){
+    private static void populateTableDisciplina(Context context, SQLiteDatabase database){
 
-        ContentValues aulaValues = new ContentValues();
-        aulaValues.put(AulaDAO.TABLECOLUMNS[1], discCpt);
-        aulaValues.put(AulaDAO.TABLECOLUMNS[2], turno);
-        aulaValues.put(AulaDAO.TABLECOLUMNS[3], professor);
-        
-        database.insert(AulaDAO.TABLENAME, null, aulaValues);
+        //Recupera o gerenciador de recursos para abrir o arquivo
+        AssetManager assetManager = context.getAssets();
+
+        try{
+            //Abre um arquivo que povoa a base de dados inicial
+            InputStream arquivo = assetManager.open("Disciplinas.txt");
+            InputStreamReader leitorArquivo = new InputStreamReader(arquivo);
+            BufferedReader leitorLinhas = new BufferedReader(leitorArquivo);
+
+            //Recupera a primeira linha do arquivo
+            String linha = leitorLinhas.readLine();
+
+            //Enquanto houver linhas no arquivo, divide o conteúdo de cada uma
+            // para pegar os valores dos VO's
+            while(linha != null){
+                //Quebra a linha nos pontos em que houver uma barra separando os valores
+                String[] valores = linha.split("/");
+
+                //Cria um novo VO
+                DisciplinaVO disciplinaVO = new DisciplinaVO();
+                disciplinaVO.setCodigo(valores[0]);
+                disciplinaVO.setNome(valores[1]);
+                disciplinaVO.setCurso(valores[2]);
+                disciplinaVO.setPeriodo(Integer.parseInt(valores[3]));
+
+                //Insere na base de dados
+                DisciplinaDAO dao = new DisciplinaDAO(context);
+                dao.insert(disciplinaVO, database);
+
+                //Recupera a próxima linha do arquivo
+                linha = leitorLinhas.readLine();
+            }
+
+            arquivo.close();
+        }catch(IOException e){
+            //Exibe uma mensagem na tela caso ocorra algum erro ao abrir o arquivo
+            System.err.printf("Erro ao abrir o arquivo: %s\n", e.getMessage());
+        }
     }
 
-    private static void populateTableHorario(SQLiteDatabase database
-            ,int idAula, String hora, String diaSemana, String sala){
+    private static void populateTableAula(Context context, SQLiteDatabase database){
 
-        ContentValues multiValues = new ContentValues();
-        multiValues.put(AulaHorarioDAO.TABLECOLUMNS[1], idAula);
-        multiValues.put(AulaHorarioDAO.TABLECOLUMNS[2], hora);
-        multiValues.put(AulaHorarioDAO.TABLECOLUMNS[3], diaSemana);
-        multiValues.put(AulaHorarioDAO.TABLECOLUMNS[4], sala);
+        //Recupera o gerenciador de recursos para abrir o arquivo
+        AssetManager assetManager = context.getAssets();
 
-        database.insert(AulaHorarioDAO.TABLENAME, null, multiValues);
+        try{
+            //Abre um arquivo que povoa a base de dados inicial
+            InputStream arquivo = assetManager.open("Aulas.txt");
+            InputStreamReader leitorArquivo = new InputStreamReader(arquivo, "ISO-8859-1");
+            BufferedReader leitorLinhas = new BufferedReader(leitorArquivo);
+
+            //Recupera a primeira linha do arquivo
+            String linha = leitorLinhas.readLine();
+
+            //Enquanto houver linhas no arquivo, divide o conteúdo de cada uma
+            // para pegar os valores dos VO's
+            while(linha != null){
+                //Quebra a linha nos pontos em que houver uma barra separando os valores
+                String[] valores = linha.split("/");
+
+                //Cria um novo VO
+                AulaVO aulaVO = new AulaVO();
+                aulaVO.setDiscCodigo(valores[0]);
+                aulaVO.setTurno(valores[1]);
+                aulaVO.setProfessor(valores[2]);
+
+                //Insere na base de dados
+                AulaDAO dao = new AulaDAO(context);
+                dao.insert(aulaVO, database);
+
+                //Recupera a próxima linha do arquivo
+                linha = leitorLinhas.readLine();
+            }
+        }catch(IOException e){
+            //Exibe uma mensagem na tela caso ocorra algum erro ao abrir o arquivo
+            System.err.printf("Erro ao abrir o arquivo: %s\n", e.getMessage());
+        }
     }
 
+    private static void populateTableHorario(Context context, SQLiteDatabase database){
+
+        //Recupera o gerenciador de recursos para abrir o arquivo
+        AssetManager assetManager = context.getAssets();
+
+        try{
+            //Abre um arquivo que povoa a base de dados inicial
+            InputStream arquivo = assetManager.open("Aula-Horário.txt");
+            InputStreamReader leitorArquivo = new InputStreamReader(arquivo, "ISO-8859-1");
+            BufferedReader leitorLinhas = new BufferedReader(leitorArquivo);
+
+            //Recupera a primeira linha do arquivo
+            String linha = leitorLinhas.readLine();
+
+            //Enquanto houver linhas no arquivo, divide o conteúdo de cada uma
+            // para pegar os valores dos VO's
+            while(linha != null){
+                //Quebra a linha nos pontos em que houver uma barra separando os valores
+                String[] valores = linha.split("/");
+
+                //Cria um novo VO
+                AulaHorarioVO aulaHorarioVO = new AulaHorarioVO();
+                aulaHorarioVO.setIdAula(Integer.parseInt(valores[0]));
+                aulaHorarioVO.setHora(valores[1]);
+                aulaHorarioVO.setDiaSemana(valores[2]);
+                aulaHorarioVO.setSala(valores[3]);
+
+                //Insere na base de dados
+                AulaHorarioDAO dao = new AulaHorarioDAO(context);
+                dao.insert(aulaHorarioVO, database);
+
+                //Recupera a próxima linha do arquivo
+                linha = leitorLinhas.readLine();
+            }
+        }catch(IOException e){
+            //Exibe uma mensagem na tela caso ocorra algum erro ao abrir o arquivo
+            System.err.printf("Erro ao abrir o arquivo: %s\n", e.getMessage());
+        }
+    }
+
+    //Este método está aqui apenas como um teste
     private static void populateTableRDM(SQLiteDatabase database
             ,String nome, String curso){
 

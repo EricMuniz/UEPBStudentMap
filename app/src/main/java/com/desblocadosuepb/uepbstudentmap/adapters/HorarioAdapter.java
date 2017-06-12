@@ -20,11 +20,11 @@ import java.util.List;
  *
  * @author Eric
  * @version 1
- * @since Release 01
  * @see android.widget.ArrayAdapter
  * @see com.desblocadosuepb.uepbstudentmap.adapters.AulaAdapter
+ * @since Release 01
  */
-public class HorarioAdapter extends ArrayAdapter<AulaHorarioVO> {
+class HorarioAdapter extends ArrayAdapter<AulaHorarioVO> {
 
     private Context context;
     private List<AulaHorarioVO> values;
@@ -35,7 +35,7 @@ public class HorarioAdapter extends ArrayAdapter<AulaHorarioVO> {
      * @param context O contexto onde o layout será inflado.
      * @param values  O Array de AulaHorarioVO para preencher os campos relacionados na ListView.
      */
-    public HorarioAdapter(Context context, List<AulaHorarioVO> values){
+    HorarioAdapter(Context context, List<AulaHorarioVO> values){
         super(context, -1, values);
         this.context = context;
         this.values = values;

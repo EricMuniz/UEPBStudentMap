@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Este é o CardView que representa um item da lista de Disciplinas.
+    Ele é usado na classe DisciplinaAdapter.
+    O CardView é a view raiz e seu filho é um LinearLayout.
+    Os filhos do LinearLayout são os campos com os dados da Disciplina.-->
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+
+    card_view:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!-- Linha do Nome -->
+        <TextView
+            android:id="@+id/card_view_disciplina_nome"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:padding="10dp"
+
+            android:textSize="18sp"
+            android:textColor="#FFF"
+            android:background="@color/colorPrimary"
+            />
+
+        <!-- Linha do Código -->
+        <TextView
+            android:id="@+id/card_view_disciplina_codigo"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:padding="10dp"
+
+            android:textSize="18sp"
+            android:textColor="#fff"
+            android:background="@color/colorPrimary"
+            />
+
+        <!-- Linha do Curso -->
+        <TextView
+            android:id="@+id/card_view_disciplina_curso"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:padding="10dp"
+
+            android:textSize="18sp"
+            android:textColor="#000"
+            android:background="#fff"
+            />
+
+        <!-- Linha do Período -->
+        <TextView
+            android:id="@+id/card_view_disciplina_periodo"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:padding="10dp"
+
+            android:textSize="18sp"
+            android:textColor="#000"
+            android:background="#fff"
+            />
+
+        <!-- Botão para mais detalhes -->
+        <Button
+            android:id="@+id/card_view_disciplina_botao_detalhes"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:padding="10dp"
+
+            android:text="@string/detalhes"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textColor="#339999"
+            android:background="#fff"
+            />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

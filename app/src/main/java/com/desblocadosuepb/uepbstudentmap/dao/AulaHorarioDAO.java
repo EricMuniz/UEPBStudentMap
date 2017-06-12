@@ -1,5 +1,6 @@
 package com.desblocadosuepb.uepbstudentmap.dao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,9 +16,9 @@ import java.util.List;
  * Classe DAO do Value Object AulaHorario.
  *
  * @author Eric
- * @version 1
- * @since Release 01
+ * @version 1.1
  * @see com.desblocadosuepb.uepbstudentmap.model.AulaHorarioVO
+ * @since Release 01
  */
 public class AulaHorarioDAO {
 
@@ -25,11 +26,11 @@ public class AulaHorarioDAO {
     /**
      * A constante TABLENAME. O nome da tabela.
      */
-    public static final String TABLENAME = "AULAHORARIO";
+    private static final String TABLENAME = "AULAHORARIO";
     /**
      * A constante TABLECOLUMNS. As colunas da tabela.
      */
-    public static final String[] TABLECOLUMNS = new String[]{"_id", "ID_AULA", "HORA", "DIASEMANA", "SALA"};
+    private static final String[] TABLECOLUMNS = new String[]{"_id", "ID_AULA", "HORA", "DIASEMANA", "SALA"};
 
     /**
      * Construtor da classe AulaHorarioDAO
@@ -38,6 +39,34 @@ public class AulaHorarioDAO {
      */
     public AulaHorarioDAO(Context context){
         this.context = context;
+    }
+
+    /**
+     * Insere uma nova tupla na base de dados.
+     *
+     * @param aulaHorario o horário
+     * @param database    a base de dados
+     * @return True se a inserção der certo
+     */
+    boolean insert(AulaHorarioVO aulaHorario, SQLiteDatabase database){
+        try{
+            //Cria uma varável para alocar os dados que vão para o banco
+            ContentValues values = new ContentValues();
+
+            //Define os valores na variável
+            values.put(TABLECOLUMNS[1], aulaHorario.getIdAula());
+            values.put(TABLECOLUMNS[2], aulaHorario.getHora());
+            values.put(TABLECOLUMNS[3], aulaHorario.getDiaSemana());
+            values.put(TABLECOLUMNS[4], aulaHorario.getSala());
+
+            //Insere no banco
+            return (database.insert(TABLENAME, null, values) > 1);
+        }catch(SQLiteException e){
+            //Caso o banco esteja inacessível mostra uma mensagem na tela
+            Toast.makeText(context, "Database Indisponível", Toast.LENGTH_SHORT).show();
+        }
+
+        return false;
     }
 
     /**
@@ -53,12 +82,14 @@ public class AulaHorarioDAO {
         List<AulaHorarioVO> lista = new ArrayList<>();
 
         try{
+            //Recupera a base de dados e realiza uma query buscando pelo ID da aula
             SQLiteDatabase database = new StudentMapDatabaseHelper(context).getReadableDatabase();
             Cursor cursor = database.query(TABLENAME, TABLECOLUMNS,
                     "ID_AULA = ?",
                     new String[]{Integer.toString(aulaId)},
                     null,null,null);
 
+            //Enquanto houver registros no resultado da query, monta os objetos e adiciona na lista
             while(cursor.moveToNext()){
                 AulaHorarioVO multivalores = new AulaHorarioVO();
                 multivalores.setId(cursor.getInt(cursor.getColumnIndex(TABLECOLUMNS[0])));
@@ -70,9 +101,10 @@ public class AulaHorarioDAO {
                 lista.add(multivalores);
             }
 
-            cursor.close();
-            database.close();
+            cursor.close(); //Fecha o cursor
+            database.close(); //Fecha a base
         }catch (SQLiteException e){
+            //Caso o banco esteja inacessível mostra uma mensagem na tela
             Toast.makeText(context, "Database indisponível", Toast.LENGTH_SHORT).show();
         }
 

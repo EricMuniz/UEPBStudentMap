@@ -16,7 +16,7 @@ import java.util.List;
  * Classe DAO do Value Object Disciplina.
  *
  * @author Eric
- * @version 1
+ * @version 1.1
  * @since Release 01
  * @see com.desblocadosuepb.uepbstudentmap.model.DisciplinaVO
  */
@@ -28,11 +28,11 @@ public class DisciplinaDAO {
     /**
      * A constante TABLENAME. O nome da tabela.
      */
-    static final String TABLENAME = "DISCIPLINA";
+    private static final String TABLENAME = "DISCIPLINA";
     /**
      * A constante TABLECOLUMNS. As colunas da tabela.
      */
-    static final String[] TABLECOLLUMNS = new String[]{"_id", "CODIGO", "NOME", "CURSO", "PERIODO"};
+    private static final String[] TABLECOLLUMNS = new String[]{"_id", "CODIGO", "NOME", "CURSO", "PERIODO"};
 
     /**
      * Construtor da classe DisciplinaDAO
@@ -51,18 +51,21 @@ public class DisciplinaDAO {
      * @param disciplina    A disciplina a ser inserida.
      * @return              True se a operação foi bem sucedida.
      */
-    public boolean insert(DisciplinaVO disciplina) {
+    boolean insert(DisciplinaVO disciplina, SQLiteDatabase database) {
         try {
-            SQLiteDatabase database = new StudentMapDatabaseHelper(context).getWritableDatabase();
+            //Cria uma variável para alocar os dados que vão para o banco
             ContentValues values = new ContentValues();
 
+            //Define os valores na variável
             values.put(TABLECOLLUMNS[1], disciplina.getCodigo());
             values.put(TABLECOLLUMNS[2], disciplina.getNome());
             values.put(TABLECOLLUMNS[3], disciplina.getCurso());
             values.put(TABLECOLLUMNS[4], disciplina.getPeriodo());
 
+            //Insere no banco
             return (database.insert(TABLENAME, null, values) > 1);
         }catch (SQLiteException e){
+            //Caso o banco esteja inacessível mostra uma mensagem na tela
             Toast.makeText(context, "Database Indisponível", Toast.LENGTH_SHORT).show();
         }
 
@@ -80,9 +83,11 @@ public class DisciplinaDAO {
         List<DisciplinaVO> list = new ArrayList<>();
 
         try {
+            //Recupera a base de dados e realiza uma query para recuperar as disciplinas
             SQLiteDatabase database = new StudentMapDatabaseHelper(context).getReadableDatabase();
             Cursor cursor = database.query(TABLENAME, TABLECOLLUMNS, null, null, null, null, null);
 
+            //Enquanto houver registros no resultado da query, monta os objetos e adiciona na lista
             while (cursor.moveToNext()) {
                 DisciplinaVO disciplina = new DisciplinaVO();
                 disciplina.setId(cursor.getInt(cursor.getColumnIndex(TABLECOLLUMNS[0])));
@@ -94,9 +99,10 @@ public class DisciplinaDAO {
                 list.add(disciplina);
             }
 
-            cursor.close();
-            database.close();
+            cursor.close(); //Fecha o cursor
+            database.close(); //Fecha a base
         }catch (SQLiteException e){
+            //Caso o banco esteja inacessível mostra uma mensagem na tela
             Toast.makeText(context, "Database Indisponível", Toast.LENGTH_SHORT).show();
         }
 
@@ -115,12 +121,14 @@ public class DisciplinaDAO {
         List<DisciplinaVO> list = new ArrayList<>();
 
         try {
+            //Recupera a base de dados e realiza uma query para recuperar as disciplinas
             SQLiteDatabase database = new StudentMapDatabaseHelper(context).getReadableDatabase();
             Cursor cursor = database.query(TABLENAME, TABLECOLLUMNS,
                     "CURSO = ?",
                     new String[]{curso},
                     null, null, null);
 
+            //Enquanto houver registros no resultado da query, monta os objetos e adiciona na lista
             while (cursor.moveToNext()) {
                 DisciplinaVO disciplina = new DisciplinaVO();
                 disciplina.setId(cursor.getInt(cursor.getColumnIndex(TABLECOLLUMNS[0])));
@@ -132,9 +140,10 @@ public class DisciplinaDAO {
                 list.add(disciplina);
             }
 
-            cursor.close();
-            database.close();
+            cursor.close(); //Fecha o cursor
+            database.close(); //Fecha a base
         }catch(SQLiteException e){
+            //Caso o banco esteja inacessível mostra uma mensagem na tela
             Toast.makeText(context, "Database Indisponível", Toast.LENGTH_SHORT).show();
         }
 
@@ -153,12 +162,15 @@ public class DisciplinaDAO {
         DisciplinaVO disciplina = new DisciplinaVO();
 
         try {
+            //Recupera a base de dados e realiza uma query para recuperar
+            // a disciplina a partir do código
             SQLiteDatabase database = new StudentMapDatabaseHelper(context).getReadableDatabase();
             Cursor cursor = database.query(TABLENAME, TABLECOLLUMNS,
                     "CODIGO = ?",
                     new String[]{codigo},
                     null, null, null);
 
+            //Enquanto houver registros no resultado da query, monta os objetos e adiciona na lista
             if (cursor.moveToFirst()) {
                 disciplina.setId(cursor.getInt(cursor.getColumnIndex(TABLECOLLUMNS[0])));
                 disciplina.setCodigo(cursor.getString(cursor.getColumnIndex(TABLECOLLUMNS[1])));
@@ -167,9 +179,10 @@ public class DisciplinaDAO {
                 disciplina.setPeriodo(cursor.getInt(cursor.getColumnIndex(TABLECOLLUMNS[4])));
             }
 
-            cursor.close();
-            database.close();
+            cursor.close(); //Fecha o cursor
+            database.close(); //Fecha a base
         }catch (SQLiteException e){
+            //Caso o banco esteja inacessível mostra uma mensagem na tela
             Toast.makeText(context, "Database Indisponível", Toast.LENGTH_SHORT).show();
         }
         return disciplina;

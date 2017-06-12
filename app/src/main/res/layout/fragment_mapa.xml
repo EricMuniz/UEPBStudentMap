@@ -1,0 +1,35 @@
+<!-- Layout usado no Fragment do Mapa.
+ O layout raiz é um RelativeLayout.
+ Seus filhos são um TabLayout ao qual são fixadas as
+ abas do mapa; e o ViewPager responsável por realizar a troca
+ de abas.-->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.desblocadosuepb.uepbstudentmap.fragments.MapaFragment">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:minHeight="?android:actionBarSize"
+        android:elevation="6dp"
+
+        android:background="@color/colorPrimary"
+
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tab_layout"
+        />
+
+</RelativeLayout>
